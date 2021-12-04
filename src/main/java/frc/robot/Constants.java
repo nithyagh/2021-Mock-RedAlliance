@@ -20,7 +20,7 @@ public final class Constants {
 
     public final class Robot {
         //Wheel diameter measured in inches
-        public static final double WheelDiameterInches = 6;
+        public static final double WheelDiameterInches = 4;
         public static final double MetersPerInch = 0.0254;
         public static final double WheelCircumferenceMeters = WheelDiameterInches * Math.PI * 0.0254;
         public static final double EncoderTicksPerRevolution = 4096;

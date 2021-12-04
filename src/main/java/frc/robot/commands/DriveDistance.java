@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
@@ -24,13 +23,12 @@ public class DriveDistance extends CommandBase {
     _driveTrain = driveTrain;
     addRequirements(_driveTrain);
     _distance = distance;
-    _drivespeed = speed;
+    _drivespeed = (_distance >= 0 ? 1 : -1) * Math.abs(speed);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    displayStatus("Starting");
     _finished = false;
     _driveTrain.ArcadeDrive(0, 0);
     _driveTrain.zeroDisplacement();
@@ -39,39 +37,18 @@ public class DriveDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    displayStatus("In Progress");
-    if(_distance < 0) {
-      if(_driveTrain.getAverageDisplacement() > _distance) {
-        _driveTrain.ArcadeDrive(-_drivespeed, 0);
-      }
-      else {
-        _finished = true;
-        _driveTrain.ArcadeDrive(0, 0);
-      }
+    if(Math.abs(_driveTrain.getAverageDisplacement()) < Math.abs(_distance)) {
+      _driveTrain.ArcadeDrive(_drivespeed, 0);
     }
     else {
-      if(_driveTrain.getAverageDisplacement() < _distance) {
-        _driveTrain.ArcadeDrive(_drivespeed, 0);
-      }
-      else {
-        _finished = true;
-        _driveTrain.ArcadeDrive(0, 0);
-      }
+      _finished = true;
+      _driveTrain.ArcadeDrive(0, 0);
     }
-    // if(_driveTrain.getAverageDisplacement() < _distance) {
-    //   _driveTrain.ArcadeDrive(_drivespeed, 0);
-    // }
-    // else {
-    //   _finished = true;
-    //   _driveTrain.ArcadeDrive(0, 0);
-    //   displayStatus("Finished");
-    // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    displayStatus("Ended");
     _driveTrain.ArcadeDrive(0, 0);
   }
 
@@ -81,7 +58,4 @@ public class DriveDistance extends CommandBase {
     return _finished;
   }
 
-  private void displayStatus(String status) {
-    SmartDashboard.putString("Status", status);
-  }
 }
