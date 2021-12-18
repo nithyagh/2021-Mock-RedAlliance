@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
+  
   /** Creates a new DriveTrain. */
   WPI_TalonSRX _leftDriveTalon;
   WPI_TalonSRX _rightDriveTalon;
@@ -41,7 +41,9 @@ public class DriveTrain extends SubsystemBase {
     _leftDriveTalon.configFactoryDefault();
     _rightDriveTalon.configFactoryDefault();
 
-
+    _leftDriveTalon.setInverted(false);
+    _righttDriveTalon.setInverted(false);
+    
     _leftDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     _rightDriveTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
@@ -64,7 +66,7 @@ public class DriveTrain extends SubsystemBase {
     printGyro();
   }
 
-  public void TankDrive(double leftSpeed, double rightSpeed) {
+  public void tankDrive(double leftSpeed, double rightSpeed) {
     _diffDrive.tankDrive(leftSpeed, rightSpeed);
   }
 
